@@ -18,6 +18,7 @@ package io.cdap.plugin.zendesk.source.batch;
 
 import com.google.common.collect.ImmutableMap;
 import io.cdap.cdap.api.data.format.StructuredRecord;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.zendesk.client.v2.model.User;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 
 /**
  * {@inheritDoc}
- *
+ * <p>
  * Tests to verify configuration of {@link ZendeskBatchSource}
  */
 public class ZendeskBatchSourceTest extends BaseZendeskBatchSourceTest {

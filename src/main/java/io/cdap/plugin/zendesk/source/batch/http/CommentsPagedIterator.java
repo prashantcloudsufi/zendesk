@@ -42,10 +42,11 @@ public class CommentsPagedIterator implements Iterator<String>, Closeable {
 
   /**
    * Constructor for CommentsPagedIterator.
+   *
    * @param entityIterator The instance of PagedIterator object
-   * @param config The batch source config
-   * @param objectType The object type
-   * @param subdomain The sub-domain
+   * @param config         The batch source config
+   * @param objectType     The object type
+   * @param subdomain      The sub-domain
    */
   public CommentsPagedIterator(PagedIterator entityIterator,
                                ZendeskBatchSourceConfig config, ObjectType objectType, String subdomain) {
@@ -61,10 +62,16 @@ public class CommentsPagedIterator implements Iterator<String>, Closeable {
       if (!entityIterator.hasNext()) {
         return false;
       }
-      String next = entityIterator.next();
-      Map userMap = GSON.fromJson(next, Map.class);
-      Long userId = ((Number) userMap.get("id")).longValue();
-      pagedIterator = new PagedIterator(config, objectType, subdomain, userId);
+      // If there are no records in pagedIterator, check for next user
+      while (entityIterator.hasNext()) {
+        String next = entityIterator.next();
+        Map userMap = GSON.fromJson(next, Map.class);
+        Long userId = ((Number) userMap.get("id")).longValue();
+        pagedIterator = new PagedIterator(config, objectType, subdomain, userId);
+        if (pagedIterator.hasNext()) {
+          return true;
+        }
+      }
     }
     return pagedIterator.hasNext();
   }

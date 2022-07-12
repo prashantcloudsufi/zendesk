@@ -33,10 +33,11 @@
         {
           "name": "objectsToPull",
           "label": "Object to Pull",
-          "widget-type": "select",
+          "widget-type": "multi-select",
           "widget-attributes": {
+            "delimiter": ",",
             "default": "Groups",
-            "values": [
+            "options": [
               "Article Comments",
               "Post Comments",
               "Requests Comments",
@@ -51,19 +52,30 @@
               "Tickets",
               "Users"
             ]
-          },
-          "plugin-function": {
-            "method": "POST",
-            "widget": "outputSchema",
-            "output-property": "schema",
-            "plugin-method": "getSchema"
           }
         },
         {
-          "widget-type": "hidden",
           "name": "objectsToSkip",
+          "label": "Object to Skip",
+          "widget-type": "multi-select",
           "widget-attributes": {
-            "default": ""
+            "delimiter": ",",
+            "default": "",
+            "options": [
+              "Article Comments",
+              "Post Comments",
+              "Requests Comments",
+              "Ticket Comments",
+              "Groups",
+              "Organizations",
+              "Satisfaction Ratings",
+              "Tags",
+              "Ticket Fields",
+              "Ticket Metrics",
+              "Ticket Metric Events",
+              "Tickets",
+              "Users"
+            ]
           }
         },
         {
@@ -80,16 +92,6 @@
           "name": "endDate",
           "widget-attributes": {
             "placeholder": "YYYY-MM-DDThh:mm:ssZ (ex: 2019-01-01T00:00:00Z)"
-          },
-          "plugin-function": {
-            "label": "Get Schema",
-            "widget": "outputSchema",
-            "output-property": "schema",
-            "omit-properties": [
-              {
-                "name": "schema"
-              }
-            ]
           }
         },
         {
@@ -113,6 +115,15 @@
               "Bad Without Comment"
             ]
           }
+        },
+        {
+          "widget-type": "textbox",
+          "label": "Table Name Field",
+          "name": "tableNameField",
+          "widget-attributes": {
+            "placeholder": "The name of the field that holds the table name.",
+            "default": "tablename"
+          }
         }
       ]
     },
@@ -125,7 +136,7 @@
           "name": "maxRetryCount",
           "widget-attributes": {
             "min": "0",
-            "default": "10"
+            "default": "20"
           }
         },
         {
@@ -152,15 +163,6 @@
           "widget-attributes": {
             "default": "https://%s.zendesk.com/api/v2/%s"
           }
-        },
-        {
-          "widget-type": "hidden",
-          "label": "Table Name Field",
-          "name": "tableNameField",
-          "widget-attributes": {
-            "placeholder": "The name of the field that holds the table name.",
-            "default": "tablename"
-          }
         }
       ]
     }
@@ -172,36 +174,6 @@
       "widget-attributes": {
         "schema-default-type": "string"
       }
-    }
-  ],
-  "filters": [
-    {
-      "name": "Start Date Filter",
-      "condition": {
-        "expression": "objectsToPull == 'Ticket Comments' || objectsToPull == 'Organizations' || objectsToPull == 'Satisfaction Ratings' || objectsToPull == 'Ticket Metric Events' || objectsToPull == 'Tickets' || objectsToPull == 'Users'"
-      },
-      "show": [
-        {
-          "name": "startDate",
-          "type": "property"
-        }
-      ]
-    },
-    {
-      "name": "Satisfaction Ratings Filter",
-      "condition": {
-        "expression": "objectsToPull == 'Satisfaction Ratings'"
-      },
-      "show": [
-        {
-          "name": "endDate",
-          "type": "property"
-        },
-        {
-          "name": "satisfactionRatingsScore",
-          "type": "property"
-        }
-      ]
     }
   ]
 }

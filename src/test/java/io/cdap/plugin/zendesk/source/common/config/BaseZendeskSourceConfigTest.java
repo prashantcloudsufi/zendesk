@@ -19,6 +19,7 @@ package io.cdap.plugin.zendesk.source.common.config;
 import io.cdap.cdap.etl.api.validation.CauseAttributes;
 import io.cdap.cdap.etl.api.validation.ValidationFailure;
 import io.cdap.cdap.etl.mock.validation.MockFailureCollector;
+
 import org.junit.Assert;
 import org.junit.Test;
 

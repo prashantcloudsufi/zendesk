@@ -28,7 +28,12 @@ for API Token generation.
 
 **Object to Pull:** Objects to pull from Zendesk API.
 
-**Start Date:** Filter data to include only records which have Zendesk modified date is greater than
+**Object to Skip:** Objects to Skip from Zendesk API.
+
+**Table Name Field:** The name of the field that holds the table name. Must not be the name of any table column that 
+will be read. Defaults to `tablename`.
+
+**Start Date:** Filter data to include only records which have Zendesk modified date is greater than 
 or equal to the specified date. The date must be provided in the date format:
 
 |              Format              |       Format Syntax       |          Example          |
@@ -39,7 +44,7 @@ or equal to the specified date. The date must be provided in the date format:
 
 Start Date is required for batch objects like: Ticket Comments, Organizations, Ticket Metric Events, Tickets, Users.
 
-**End Date:** Filter data to include only records which have Zendesk modified date is less than
+**End Date:** Filter data to include only records which have Zendesk modified date is less than 
 the specified date. The date must be provided in the date format:
 
 |              Format              |       Format Syntax       |          Example          |
@@ -48,7 +53,7 @@ the specified date. The date must be provided in the date format:
 |                                  | YYYY-MM-DDThh:mm:ss-hh:mm | 1999-01-01T23:01:01-08:00 |
 |                                  | YYYY-MM-DDThh:mm:ssZ      | 1999-01-01T23:01:01Z      |
 
-Specifying this along with `Start Date` allows reading data modified within a specific time window.
+Specifying this along with `Start Date` allows reading data modified within a specific time window. 
 If no value is provided, no upper bound is applied.
 
 **Satisfaction Ratings Score:** Filter Satisfaction Ratings object to include only records which have Zendesk score

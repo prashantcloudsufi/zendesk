@@ -36,6 +36,7 @@ import io.cdap.cdap.test.ApplicationManager;
 import io.cdap.cdap.test.DataSetManager;
 import io.cdap.cdap.test.TestConfiguration;
 import io.cdap.cdap.test.WorkflowManager;
+
 import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.BeforeClass;
@@ -94,7 +95,7 @@ public abstract class BaseZendeskBatchSourceTest extends HydratorTestBase {
       Assume.assumeNotNull(ADMIN_EMAIL, API_TOKEN, SUBDOMAIN);
     } catch (AssumptionViolatedException e) {
       LOG.warn("ETL tests are skipped. Please find the instructions on enabling it at " +
-                 "BaseZendeskBatchSourceTest javadoc.");
+        "BaseZendeskBatchSourceTest javadoc.");
       throw e;
     }
 
@@ -108,8 +109,8 @@ public abstract class BaseZendeskBatchSourceTest extends HydratorTestBase {
     setupBatchArtifacts(parentArtifact, DataPipelineApp.class);
 
     addPluginArtifact(NamespaceId.DEFAULT.artifact("example-plugins", "1.0.0"),
-                      parentArtifact,
-                      ZendeskBatchSource.class);
+      parentArtifact,
+      ZendeskBatchSource.class);
   }
 
   @AfterClass
