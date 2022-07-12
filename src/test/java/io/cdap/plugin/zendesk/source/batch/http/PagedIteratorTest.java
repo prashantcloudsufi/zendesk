@@ -20,6 +20,7 @@ import com.google.common.collect.ImmutableMap;
 import io.cdap.cdap.api.data.schema.Schema;
 import io.cdap.plugin.zendesk.source.batch.ZendeskBatchSourceConfig;
 import io.cdap.plugin.zendesk.source.common.ObjectType;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,8 +53,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -80,8 +79,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -113,8 +110,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -122,8 +117,8 @@ public class PagedIteratorTest {
 
     try (PagedIterator pagedIterator = new PagedIterator(config, objectType, subdomain)) {
       String actual = pagedIterator.getNextPage(ImmutableMap.of("next_page", expected,
-                                                                "end_time", endTime,
-                                                                "count", count));
+        "end_time", endTime,
+        "count", count));
       Assert.assertEquals(expected, actual);
     }
   }
@@ -143,8 +138,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -171,8 +164,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -199,8 +190,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -208,7 +197,7 @@ public class PagedIteratorTest {
 
     try (PagedIterator pagedIterator = new PagedIterator(config, objectType, subdomain)) {
       String actual = pagedIterator.getNextPage(ImmutableMap.of("next_page", "expected_page",
-                                                                "end_time", 0));
+        "end_time", 0));
       Assert.assertNull(actual);
     }
   }
@@ -231,8 +220,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -240,7 +227,7 @@ public class PagedIteratorTest {
 
     try (PagedIterator pagedIterator = new PagedIterator(config, objectType, subdomain)) {
       String actual = pagedIterator.getNextPage(ImmutableMap.of("next_page", "expected_page",
-                                                                "end_time", endTime));
+        "end_time", endTime));
       Assert.assertNull(actual);
     }
   }
@@ -263,8 +250,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -272,7 +257,7 @@ public class PagedIteratorTest {
 
     try (PagedIterator pagedIterator = new PagedIterator(config, objectType, subdomain)) {
       String actual = pagedIterator.getNextPage(ImmutableMap.of("next_page", "expected_page",
-                                                                "end_time", endTime));
+        "end_time", endTime));
       Assert.assertNull(actual);
     }
   }
@@ -295,8 +280,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -304,8 +287,8 @@ public class PagedIteratorTest {
 
     try (PagedIterator pagedIterator = new PagedIterator(config, objectType, subdomain)) {
       String actual = pagedIterator.getNextPage(ImmutableMap.of("next_page", "expected_page",
-                                                                "end_time", endTime,
-                                                                "count", 0));
+        "end_time", endTime,
+        "count", 0));
       Assert.assertNull(actual);
     }
   }
@@ -329,8 +312,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -338,8 +319,8 @@ public class PagedIteratorTest {
 
     try (PagedIterator pagedIterator = new PagedIterator(config, objectType, subdomain)) {
       String actual = pagedIterator.getNextPage(ImmutableMap.of("next_page", "expected_page",
-                                                                "end_time", endTime,
-                                                                "count", count));
+        "end_time", endTime,
+        "count", count));
       Assert.assertNull(actual);
     }
   }
@@ -351,8 +332,8 @@ public class PagedIteratorTest {
         new HashMap<>(ImmutableMap.of("key", "val1")),
         new HashMap<>(ImmutableMap.of("key", "val2"))));
     List<String> expected = new ArrayList<>();
-    expected.add("{\"key\":\"val1\",\"object\":\"Organizations\"}");
-    expected.add("{\"key\":\"val2\",\"object\":\"Organizations\"}");
+    expected.add("{\"tablename\":\"Organizations\",\"key\":\"val1\"}");
+    expected.add("{\"tablename\":\"Organizations\",\"key\":\"val2\"}");
 
     ObjectType objectType = ObjectType.ORGANIZATIONS;
     String subdomain = "subdomain";
@@ -367,8 +348,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -393,8 +372,8 @@ public class PagedIteratorTest {
           new HashMap<>(ImmutableMap.of("key", "val2", "event_type", "Comment")),
           new HashMap<>(ImmutableMap.of("key", "val3", "event_type", "Not Comment"))))));
     List<String> expected = new ArrayList<>();
-    expected.add("{\"key\":\"val1\",\"event_type\":\"Comment\",\"object\":\"Ticket Comments\"}");
-    expected.add("{\"key\":\"val2\",\"event_type\":\"Comment\",\"object\":\"Ticket Comments\"}");
+    expected.add("{\"tablename\":\"Ticket_Comments\",\"key\":\"val1\",\"event_type\":\"Comment\"}");
+    expected.add("{\"tablename\":\"Ticket_Comments\",\"key\":\"val2\",\"event_type\":\"Comment\"}");
 
     ObjectType objectType = ObjectType.TICKET_COMMENTS;
     String subdomain = "subdomain";
@@ -409,8 +388,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -508,8 +485,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -541,8 +516,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -574,8 +547,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -602,8 +573,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -630,8 +599,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -663,8 +630,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -696,8 +661,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -724,8 +687,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -752,8 +713,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -785,8 +744,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -802,7 +759,7 @@ public class PagedIteratorTest {
       Assert.assertTrue(actual);
 
       String next = pagedIterator.next();
-      Assert.assertEquals("{\"key\":\"val1\",\"object\":\"Groups\"}", next);
+      Assert.assertEquals("{\"tablename\":\"Groups\",\"key\":\"val1\"}", next);
     }
   }
 
@@ -826,8 +783,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -843,7 +798,7 @@ public class PagedIteratorTest {
       Assert.assertTrue(actual);
 
       String next = pagedIterator.next();
-      Assert.assertEquals("{\"key\":\"val1\",\"object\":\"Groups\"}", next);
+      Assert.assertEquals("{\"tablename\":\"Groups\",\"key\":\"val1\"}", next);
 
       response.put("groups", Collections.singletonList(
         new HashMap<>(ImmutableMap.of("key", "val2"))));
@@ -853,7 +808,7 @@ public class PagedIteratorTest {
       Assert.assertTrue(actual);
 
       next = pagedIterator.next();
-      Assert.assertEquals("{\"key\":\"val2\",\"object\":\"Groups\"}", next);
+      Assert.assertEquals("{\"tablename\":\"Groups\",\"key\":\"val2\"}", next);
 
       actual = pagedIterator.hasNext();
       Assert.assertFalse(actual);
@@ -879,8 +834,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -896,7 +849,7 @@ public class PagedIteratorTest {
       Assert.assertTrue(actual);
 
       String next = pagedIterator.next();
-      Assert.assertEquals("{\"key\":\"val1\",\"object\":\"Groups\"}", next);
+      Assert.assertEquals("{\"tablename\":\"Groups\",\"key\":\"val1\"}", next);
 
       actual = pagedIterator.hasNext();
       Assert.assertFalse(actual);
@@ -923,8 +876,6 @@ public class PagedIteratorTest {
       "2019-01-01T23:01:01Z",
       "satisfactionRatingsScore",
       20,
-      240,
-      100,
       300,
       300,
       "http://%s.localhosttestdomain/%s",
@@ -940,7 +891,7 @@ public class PagedIteratorTest {
       Assert.assertTrue(actual);
 
       String next = pagedIterator.next();
-      Assert.assertEquals("{\"key\":\"val1\",\"object\":\"Groups\"}", next);
+      Assert.assertEquals("{\"tablename\":\"Groups\",\"key\":\"val1\"}", next);
 
       actual = pagedIterator.hasNext();
       Assert.assertFalse(actual);

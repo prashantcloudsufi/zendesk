@@ -25,6 +25,7 @@ import io.cdap.plugin.zendesk.source.batch.http.CommentsPagedIterator;
 import io.cdap.plugin.zendesk.source.batch.http.PagedIterator;
 import io.cdap.plugin.zendesk.source.batch.util.ZendeskBatchSourceConstants;
 import io.cdap.plugin.zendesk.source.common.ObjectType;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapreduce.InputSplit;
@@ -50,9 +51,10 @@ public class ZendeskRecordReader extends RecordReader<NullWritable, StructuredRe
 
   /**
    * Constructor for ZendeskRecordReader.
-   * @param subdomain the subdomain name
+   *
+   * @param subdomain  the subdomain name
    * @param objectType the object type for which data to be fetched
-   * @param schema the schema for the object
+   * @param schema     the schema for the object
    */
   public ZendeskRecordReader(String subdomain, ObjectType objectType, Schema schema) {
     this.subdomain = subdomain;

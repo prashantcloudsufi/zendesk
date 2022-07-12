@@ -21,6 +21,7 @@ import io.cdap.cdap.etl.api.validation.ValidationException;
 import io.cdap.cdap.etl.api.validation.ValidationFailure;
 import io.cdap.cdap.etl.mock.validation.MockFailureCollector;
 import io.cdap.plugin.zendesk.source.common.config.BaseZendeskSourceConfig;
+
 import org.junit.Assert;
 import org.junit.Test;
 

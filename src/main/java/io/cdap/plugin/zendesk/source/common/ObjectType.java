@@ -72,10 +72,10 @@ public enum ObjectType {
     "Ticket Metric Events", "ticket_metric_events", "incremental/ticket_metric_events.json",
     true, ObjectTypeSchemaConstants.SCHEMA_TICKET_METRIC_EVENTS),
   TICKETS(
-    "Tickets", "tickets", "incremental/tickets.json",
+    "Tickets", "tickets", "incremental/tickets/cursor.json",
     true, ObjectTypeSchemaConstants.SCHEMA_TICKETS),
   USERS(
-    "Users", "users", "incremental/users.json",
+    "Users", "users", "incremental/users/cursor.json",
     true, ObjectTypeSchemaConstants.SCHEMA_USERS);
 
   private static final String CLASS_NAME = ObjectType.class.getName();
@@ -93,7 +93,7 @@ public enum ObjectType {
              boolean batch,
              Schema objectSchema) {
     this(objectName, responseKey, null,
-         apiEndpoint, batch, objectSchema);
+      apiEndpoint, batch, objectSchema);
   }
 
   ObjectType(String objectName,
@@ -136,6 +136,7 @@ public enum ObjectType {
 
   /**
    * Converts object type string value into {@link ObjectType} enum.
+   *
    * @param value object type string value
    * @return {@link ObjectType} enum
    */
@@ -148,7 +149,8 @@ public enum ObjectType {
 
   /**
    * Converts object type string value into {@link ObjectType} enum.
-   * @param value object type string value
+   *
+   * @param value     object type string value
    * @param collector the failure collector to collect the errors
    * @return {@link ObjectType} enum
    */
@@ -158,7 +160,7 @@ public enum ObjectType {
       .findFirst()
       .orElseThrow(() -> {
         collector.addFailure(String.format("Unsupported schema for object %s. ", value),
-                             "Ensure 'Object to Pull' is selected.")
+            "Ensure 'Object to Pull' is selected.")
           .withConfigProperty(BaseZendeskSourceConfig.PROPERTY_OBJECTS_TO_PULL);
         return collector.getOrThrowException();
       });

@@ -51,6 +51,12 @@
               "Tickets",
               "Users"
             ]
+          },
+          "plugin-function": {
+            "method": "POST",
+            "widget": "outputSchema",
+            "output-property": "schema",
+            "plugin-method": "getSchema"
           }
         },
         {
@@ -119,25 +125,7 @@
           "name": "maxRetryCount",
           "widget-attributes": {
             "min": "0",
-            "default": "20"
-          }
-        },
-        {
-          "widget-type": "number",
-          "label": "Max Retry Wait",
-          "name": "maxRetryWait",
-          "widget-attributes": {
-            "min": "0",
-            "default": "240"
-          }
-        },
-        {
-          "widget-type": "number",
-          "label": "Max Retry Jitter Wait",
-          "name": "maxRetryJitterWait",
-          "widget-attributes": {
-            "min": "0",
-            "default": "100"
+            "default": "10"
           }
         },
         {
@@ -163,6 +151,15 @@
           "name": "zendeskBaseUrl",
           "widget-attributes": {
             "default": "https://%s.zendesk.com/api/v2/%s"
+          }
+        },
+        {
+          "widget-type": "hidden",
+          "label": "Table Name Field",
+          "name": "tableNameField",
+          "widget-attributes": {
+            "placeholder": "The name of the field that holds the table name.",
+            "default": "tablename"
           }
         }
       ]
