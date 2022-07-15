@@ -25,6 +25,7 @@ import io.cdap.cdap.etl.api.FailureCollector;
 import io.cdap.plugin.common.IdUtils;
 import io.cdap.plugin.common.ReferencePluginConfig;
 import io.cdap.plugin.zendesk.source.common.ObjectType;
+
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.Arrays;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import javax.annotation.Nullable;
 
 /**
@@ -66,35 +68,36 @@ public class BaseZendeskSourceConfig extends ReferencePluginConfig {
   @Name(PROPERTY_ADMIN_EMAIL)
   @Description("Zendesk admin email.")
   @Macro
-  private String adminEmail;
+  private final String adminEmail;
 
   @Name(PROPERTY_API_TOKEN)
   @Description("Zendesk API token.")
   @Macro
-  private String apiToken;
+  private final String apiToken;
 
   @Name(PROPERTY_SUBDOMAINS)
   @Description("Zendesk Subdomains to read objects from.")
   @Macro
-  private String subdomains;
+  private final String subdomains;
 
   @Name(PROPERTY_OBJECTS_TO_PULL)
   @Description("Objects to pull from Zendesk API.")
   @Macro
   @Nullable
-  private String objectsToPull;
+  private final String objectsToPull;
 
   @Name(PROPERTY_OBJECTS_TO_SKIP)
   @Description("Objects to skip from Zendesk API.")
   @Nullable
-  private String objectsToSkip;
+  private final String objectsToSkip;
 
   /**
    * Constructor for BaseZendeskSourceConfig object.
+   *
    * @param referenceName The reference name
-   * @param adminEmail Zendesk admin email
-   * @param apiToken Zendesk API token
-   * @param subdomains The list of sub-domains
+   * @param adminEmail    Zendesk admin email
+   * @param apiToken      Zendesk API token
+   * @param subdomains    The list of sub-domains
    * @param objectsToPull The list of objects to pull
    * @param objectsToSkip The list of objects to skip
    */
@@ -134,6 +137,7 @@ public class BaseZendeskSourceConfig extends ReferencePluginConfig {
 
   /**
    * Builds a final list of objects to be pulled by reading object to pull and objects to skip lists.
+   *
    * @return the list of objects to pull
    */
   public List<String> getObjects() {
@@ -148,6 +152,7 @@ public class BaseZendeskSourceConfig extends ReferencePluginConfig {
 
   /**
    * Validates {@link BaseZendeskSourceConfig} instance.
+   *
    * @param collector The failure collector to collect the errors
    */
   public void validate(FailureCollector collector) {
@@ -160,8 +165,8 @@ public class BaseZendeskSourceConfig extends ReferencePluginConfig {
     if (!Strings.isNullOrEmpty(objectsToSkip)
       && getObjects().isEmpty()) {
       collector.addFailure(
-        "All objects are skipped.",
-        "Make sure 'Objects to Pull' and 'Objects to Skip' fields don't hold same values.")
+          "All objects are skipped.",
+          "Make sure 'Objects to Pull' and 'Objects to Skip' fields don't hold same values.")
         .withConfigProperty(PROPERTY_OBJECTS_TO_PULL)
         .withConfigProperty(PROPERTY_OBJECTS_TO_SKIP);
     }
@@ -178,6 +183,7 @@ public class BaseZendeskSourceConfig extends ReferencePluginConfig {
 
   /**
    * Returns the map of schemas per object.
+   *
    * @param collector The failure collector to collect the errors
    * @return map of schemas per object
    */

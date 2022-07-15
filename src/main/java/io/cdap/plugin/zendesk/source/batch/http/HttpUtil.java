@@ -19,10 +19,10 @@ package io.cdap.plugin.zendesk.source.batch.http;
 import com.github.rholder.retry.Retryer;
 import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
-import com.github.rholder.retry.WaitStrategies;
 import com.google.common.base.Strings;
 import io.cdap.plugin.zendesk.source.batch.ZendeskBatchSourceConfig;
 import io.cdap.plugin.zendesk.source.common.ObjectType;
+
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -52,21 +52,22 @@ import java.util.stream.Stream;
 public class HttpUtil {
 
   private static final Map<String, String> SATISFACTION_RATINGS_SCORE_MAP = Stream.of(
-    new String[][]{{"Offered", "offered"},
-      {"Unoffered", "unoffered"},
-      {"Received", "received"},
-      {"Received With Comment", "received_with_comment"},
-      {"Received Without Comment", "received_without_comment"},
-      {"Good", "good"},
-      {"Good With Comment", "good_with_comment"},
-      {"Good Without Comment", "good_without_comment"},
-      {"Bad", "bad"},
-      {"Bad With Comment", "bad_with_comment"},
-      {"Bad Without Comment", "bad_without_comment"}})
+      new String[][]{{"Offered", "offered"},
+        {"Unoffered", "unoffered"},
+        {"Received", "received"},
+        {"Received With Comment", "received_with_comment"},
+        {"Received Without Comment", "received_without_comment"},
+        {"Good", "good"},
+        {"Good With Comment", "good_with_comment"},
+        {"Good Without Comment", "good_without_comment"},
+        {"Bad", "bad"},
+        {"Bad With Comment", "bad_with_comment"},
+        {"Bad Without Comment", "bad_without_comment"}})
     .collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
   /**
    * Returns CloseableHttpClient object depending on the batch source config
+   *
    * @param config The batch source config
    * @return The instance of CloseableHttpClient object
    */
@@ -84,8 +85,9 @@ public class HttpUtil {
 
   /**
    * Returns HttpClientContext object depending on the batch source config and url.
+   *
    * @param config The batch source config
-   * @param url The url
+   * @param url    The url
    * @return The instance of HttpClientContext object
    */
   public static HttpClientContext createHttpContext(ZendeskBatchSourceConfig config, String url) {
@@ -112,10 +114,11 @@ public class HttpUtil {
 
   /**
    * Creates a url for the first page.
-   * @param config The batch source config
+   *
+   * @param config     The batch source config
    * @param objectType The object type name
-   * @param subdomain The subdomain name
-   * @param entityId The entity id
+   * @param subdomain  The subdomain name
+   * @param entityId   The entity id
    * @return The concatenated url for the first page as per the parameters passed
    */
   public static String createFirstPageUrl(ZendeskBatchSourceConfig config,
@@ -153,15 +156,13 @@ public class HttpUtil {
 
   /**
    * Returns the Retryer object instance depending on the batch source config.
+   *
    * @param config The batch source config
    * @return The instance of Retryer object
    */
   public static Retryer<Map<String, Object>> buildRetryer(ZendeskBatchSourceConfig config) {
     return RetryerBuilder.<Map<String, Object>>newBuilder()
       .retryIfExceptionOfType(RateLimitException.class)
-      .withWaitStrategy(WaitStrategies.join(
-        WaitStrategies.exponentialWait(config.getMaxRetryWait(), TimeUnit.SECONDS),
-        WaitStrategies.randomWait(config.getMaxRetryJitterWait(), TimeUnit.MILLISECONDS)))
       .withStopStrategy(StopStrategies.stopAfterAttempt(config.getMaxRetryCount()))
       .build();
   }

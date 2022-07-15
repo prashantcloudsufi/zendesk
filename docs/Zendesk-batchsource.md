@@ -28,7 +28,7 @@ for API Token generation.
 
 **Object to Pull:** Objects to pull from Zendesk API.
 
-**Start Date:** Filter data to include only records which have Zendesk modified date is greater than 
+**Start Date:** Filter data to include only records which have Zendesk modified date is greater than
 or equal to the specified date. The date must be provided in the date format:
 
 |              Format              |       Format Syntax       |          Example          |
@@ -39,7 +39,7 @@ or equal to the specified date. The date must be provided in the date format:
 
 Start Date is required for batch objects like: Ticket Comments, Organizations, Ticket Metric Events, Tickets, Users.
 
-**End Date:** Filter data to include only records which have Zendesk modified date is less than 
+**End Date:** Filter data to include only records which have Zendesk modified date is less than
 the specified date. The date must be provided in the date format:
 
 |              Format              |       Format Syntax       |          Example          |
@@ -48,7 +48,7 @@ the specified date. The date must be provided in the date format:
 |                                  | YYYY-MM-DDThh:mm:ss-hh:mm | 1999-01-01T23:01:01-08:00 |
 |                                  | YYYY-MM-DDThh:mm:ssZ      | 1999-01-01T23:01:01Z      |
 
-Specifying this along with `Start Date` allows reading data modified within a specific time window. 
+Specifying this along with `Start Date` allows reading data modified within a specific time window.
 If no value is provided, no upper bound is applied.
 
 **Satisfaction Ratings Score:** Filter Satisfaction Ratings object to include only records which have Zendesk score
@@ -58,10 +58,21 @@ equal to the specified score.
 
 **Max Retry Count:** Maximum number of retry attempts.
 
-**Max Retry Wait:** Maximum time in seconds retries can take.
-
-**Max Retry Jitter Wait:** Maximum time in milliseconds added to retries.
-
 **Connect Timeout:** Maximum time in seconds connection initialization can take.
 
 **Read Timeout:** Maximum time in seconds fetching data from the server can take.
+
+Data Type Mappings from Zendesk to CDAP
+----------
+The following table lists out different Zendesk data types, as well as the
+corresponding CDAP types.
+
+| Zendesk type           | CDAP type |
+|------------------------|-----------|
+| Boolean                | Boolean   |
+| DateTime/Time          | string    |
+| Decimal                | string    |
+| int16/int34/int64/long | Long      |
+| String                 | String    |
+| Array                  | Array     |
+| Record                 | Record    |
