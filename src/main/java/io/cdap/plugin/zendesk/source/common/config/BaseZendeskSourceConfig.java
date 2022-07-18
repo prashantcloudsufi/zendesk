@@ -16,13 +16,16 @@
 
 package io.cdap.plugin.zendesk.source.common.config;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import io.cdap.cdap.api.annotation.Description;
 import io.cdap.cdap.api.annotation.Macro;
 import io.cdap.cdap.api.annotation.Name;
 import io.cdap.cdap.api.data.schema.Schema;
 import io.cdap.cdap.etl.api.FailureCollector;
+import io.cdap.cdap.etl.api.batch.BatchSourceContext;
 import io.cdap.plugin.common.IdUtils;
+import io.cdap.plugin.common.LineageRecorder;
 import io.cdap.plugin.common.ReferencePluginConfig;
 import io.cdap.plugin.zendesk.source.common.ObjectType;
 
@@ -191,5 +194,12 @@ public class BaseZendeskSourceConfig extends ReferencePluginConfig {
     return getObjects().stream()
       .map(object -> ObjectType.fromString(object, collector))
       .collect(Collectors.toMap(ObjectType::getObjectName, ObjectType::getObjectSchema));
+  }
+
+  public void recordLineage(BatchSourceContext context, String objectName, Schema schema) {
+    LineageRecorder lineageRecorder = new LineageRecorder(context, this.referenceName);
+    lineageRecorder.createExternalDataset(schema);
+    lineageRecorder.recordRead("Read", String.format("Read from Zendesk Object %s", objectName),
+      Preconditions.checkNotNull(schema.getFields()).stream().map(Schema.Field::getName).collect(Collectors.toList()));
   }
 }

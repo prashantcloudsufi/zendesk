@@ -16,7 +16,6 @@
 
 package io.cdap.plugin.zendesk.source.batch;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import io.cdap.cdap.api.annotation.Description;
 import io.cdap.cdap.api.annotation.Name;
@@ -30,13 +29,11 @@ import io.cdap.cdap.etl.api.FailureCollector;
 import io.cdap.cdap.etl.api.PipelineConfigurer;
 import io.cdap.cdap.etl.api.batch.BatchSource;
 import io.cdap.cdap.etl.api.batch.BatchSourceContext;
-import io.cdap.plugin.common.LineageRecorder;
 import io.cdap.plugin.zendesk.source.common.config.BaseZendeskSourceConfig;
 
 import org.apache.hadoop.io.NullWritable;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 /**
  * Source plugin to read data from Zendesk.
@@ -74,12 +71,7 @@ public class ZendeskBatchSource extends BatchSource<NullWritable, StructuredReco
     Schema schema = config.getSchema(failureCollector);
     String objectToPull = config.getObjectsToPull().iterator().next();
 
-    LineageRecorder lineageRecorder = new LineageRecorder(batchSourceContext, config.referenceName);
-    lineageRecorder.createExternalDataset(schema);
-    lineageRecorder.recordRead("Read", "Read from Zendesk",
-      Preconditions.checkNotNull(schema.getFields()).stream()
-        .map(Schema.Field::getName)
-        .collect(Collectors.toList()));
+    config.recordLineage(batchSourceContext, objectToPull, schema);
     batchSourceContext.setInput(Input.of(
       config.referenceName,
       new ZendeskInputFormatProvider(config,
