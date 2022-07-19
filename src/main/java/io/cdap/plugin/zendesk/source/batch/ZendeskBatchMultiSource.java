@@ -67,26 +67,22 @@ public class ZendeskBatchMultiSource extends BatchSource<NullWritable, Structure
     failureCollector.getOrThrowException();
 
     Map<String, Schema> schemas = config.getSchemas(failureCollector);
-    Map<String, String> schemasStrings = schemas.entrySet()
-      .stream()
-      .collect(Collectors.toMap(
-        Map.Entry::getKey,
-        entry -> entry.getValue().toString()));
+    Map<String, String> schemasStrings =
+      schemas.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().toString()));
 
-    // propagate schema for each object for multi sink plugin
+    // propagate schema for each object for multi sink plugin and record lineage
     SettableArguments arguments = batchSourceContext.getArguments();
-    schemasStrings.forEach(
-      (objectName, objectSchema) -> arguments.set(
-        MULTI_SINK_PREFIX + objectName.toLowerCase().replaceAll(" ", "_"),
-        objectSchema));
+    schemasStrings.forEach((objectName, objectSchema) -> {
+      arguments.set(MULTI_SINK_PREFIX + objectName.toLowerCase().replaceAll(" ", "_"), objectSchema);
+      config.recordLineage(batchSourceContext, objectName, schemas.get(objectName));
+    });
 
-    batchSourceContext.setInput(Input.of(config.referenceName, new ZendeskInputFormatProvider(
-      config, config.getObjects(), schemasStrings, ZendeskBatchSource.NAME)));
+    batchSourceContext.setInput(Input.of(config.referenceName,
+      new ZendeskInputFormatProvider(config, config.getObjects(), schemasStrings, ZendeskBatchMultiSource.NAME)));
   }
 
   @Override
-  public void transform(KeyValue<NullWritable, StructuredRecord> input,
-                        Emitter<StructuredRecord> emitter) {
+  public void transform(KeyValue<NullWritable, StructuredRecord> input, Emitter<StructuredRecord> emitter) {
     emitter.emit(input.getValue());
   }
 }
