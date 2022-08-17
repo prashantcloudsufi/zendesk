@@ -76,3 +76,17 @@ corresponding CDAP types.
 | String                 | String    |
 | Array                  | Array     |
 | Record                 | Record    |
+
+Data Duplication issues with Zendesk APIs
+----------
+This plugin can return duplicate records for time-based exports as mentioned in Zendesk docs.
+[Zendesk documentation](https://developer.zendesk.com/documentation/ticketing/managing-tickets/using-the-incremental-export-api/#excluding-duplicate-items)
+
+Objects which support time-based exports:
+**Users**,
+**Tickets**,
+**Ticket Metric Events**,
+**Organizations**, and
+**Ticket Comments**.
+
+To Solve the duplication issue, use Deduplicate plugin from Analytics list in between.

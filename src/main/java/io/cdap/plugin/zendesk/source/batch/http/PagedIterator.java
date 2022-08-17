@@ -170,10 +170,12 @@ public class PagedIterator implements Iterator<String>, Closeable {
 
   @VisibleForTesting
   String getNextPage(Map<String, Object> responseMap) {
-    // Using cursor based pagination for Tickets and Users
-    if (objectType.equals(ObjectType.TICKETS) || objectType.equals(ObjectType.USERS)) {
-      return (String) responseMap.get(NEXT_CURSOR_URL);
-    }
+    // Commenting cursor based pagination code as Zendesk APIs are having data loss issue with cursor pagination.
+    // Will uncomment this code once issue will get fixed from zendesk side.
+    // Link to track the issue {@link https://cdap.atlassian.net/browse/PLUGIN-1372}
+//    if (objectType.equals(ObjectType.TICKETS) || objectType.equals(ObjectType.USERS)) {
+//      return (String) responseMap.get(NEXT_CURSOR_URL);
+//    }
 
     if (!objectType.isBatch()) {
       return (String) responseMap.get(NEXT_PAGE);
