@@ -33,6 +33,7 @@ import io.cdap.plugin.zendesk.source.common.config.BaseZendeskSourceConfig;
 
 import org.apache.hadoop.io.NullWritable;
 
+import java.io.IOException;
 import java.util.Collections;
 
 /**
@@ -54,7 +55,11 @@ public class ZendeskBatchSource extends BatchSource<NullWritable, StructuredReco
   @Override
   public void configurePipeline(PipelineConfigurer pipelineConfigurer) {
     FailureCollector failureCollector = pipelineConfigurer.getStageConfigurer().getFailureCollector();
-    config.validate(failureCollector);
+    try {
+      config.validate(failureCollector);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     failureCollector.getOrThrowException();
 
     if (!config.containsMacro(BaseZendeskSourceConfig.PROPERTY_OBJECTS_TO_PULL)) {
@@ -63,7 +68,7 @@ public class ZendeskBatchSource extends BatchSource<NullWritable, StructuredReco
   }
 
   @Override
-  public void prepareRun(BatchSourceContext batchSourceContext) {
+  public void prepareRun(BatchSourceContext batchSourceContext) throws IOException {
     FailureCollector failureCollector = batchSourceContext.getFailureCollector();
     config.validate(failureCollector);
     failureCollector.getOrThrowException();

@@ -57,7 +57,7 @@ public class ZendeskInputFormat extends InputFormat {
       configuration.get(ZendeskBatchSourceConstants.PROPERTY_OBJECTS_JSON), OBJECTS_TYPE);
     config = GSON.fromJson(configuration.get(ZendeskBatchSourceConstants.PROPERTY_CONFIG_JSON),
       ZendeskBatchSourceConfig.class);
-    Set<String> subdomains = config.getSubdomains();
+    Set<String> subdomains = config.getConnection().getSubdomains();
 
     return subdomains.stream()
       .flatMap(subdomain -> objects.stream().map(object -> new ZendeskSplit(subdomain, object)))

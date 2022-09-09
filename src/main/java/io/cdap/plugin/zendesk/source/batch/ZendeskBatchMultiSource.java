@@ -31,7 +31,10 @@ import io.cdap.cdap.etl.api.batch.BatchSource;
 import io.cdap.cdap.etl.api.batch.BatchSourceContext;
 
 import org.apache.hadoop.io.NullWritable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -48,6 +51,7 @@ public class ZendeskBatchMultiSource extends BatchSource<NullWritable, Structure
   private static final String MULTI_SINK_PREFIX = "multisink.";
 
   private final ZendeskBatchSourceConfig config;
+  private static final Logger LOG = LoggerFactory.getLogger(ZendeskBatchMultiSource.class);
 
   public ZendeskBatchMultiSource(ZendeskBatchSourceConfig config) {
     this.config = config;
@@ -56,12 +60,16 @@ public class ZendeskBatchMultiSource extends BatchSource<NullWritable, Structure
   @Override
   public void configurePipeline(PipelineConfigurer pipelineConfigurer) {
     FailureCollector failureCollector = pipelineConfigurer.getStageConfigurer().getFailureCollector();
-    config.validate(failureCollector);
+    try {
+      config.validate(failureCollector);
+    } catch (IOException e) {
+     LOG.error("Unable to validate");
+    }
     failureCollector.getOrThrowException();
   }
 
   @Override
-  public void prepareRun(BatchSourceContext batchSourceContext) {
+  public void prepareRun(BatchSourceContext batchSourceContext) throws IOException {
     FailureCollector failureCollector = batchSourceContext.getFailureCollector();
     config.validate(failureCollector);
     failureCollector.getOrThrowException();

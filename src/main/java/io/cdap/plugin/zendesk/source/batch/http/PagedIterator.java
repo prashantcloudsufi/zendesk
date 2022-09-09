@@ -101,7 +101,7 @@ public class PagedIterator implements Iterator<String>, Closeable {
 
     String firstPage = HttpUtil.createFirstPageUrl(config, objectType, subdomain, entityId);
     this.httpClient = HttpUtil.createHttpClient(config);
-    this.httpClientContext = HttpUtil.createHttpContext(config, firstPage);
+    this.httpClientContext = HttpUtil.createHttpContext(config.getConnection(), firstPage);
     this.nextPage = firstPage;
   }
 
