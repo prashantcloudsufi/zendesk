@@ -75,7 +75,7 @@ Feature: Zendesk Multi Source - Run time scenarios
     And Run the Pipeline in Runtime
     And Wait till pipeline is in running state
     And Open and capture logs
-    Then Verify the pipeline status is "Succeeded"
+    And Verify the pipeline status is "Succeeded"
     Then Validate record created in Sink application for Multi object is equal to expected output file "multiObjectsOutputFile"
 
   @TS-ZD-MULTI-RNTM-03 @BQ_SINK
@@ -92,7 +92,7 @@ Feature: Zendesk Multi Source - Run time scenarios
     And fill Objects to pull List with below listed Objects:
       | Ticket Comments | Groups |
     And fill Objects to skip List with below listed objects:
-      | Ticket Comments |
+      | Groups |
     And Enter input plugin property: "startDate" with value: "start.date"
     And Enter input plugin property: "endDate" with value: "end.date"
     And Validate "ZendeskMultiObjects" plugin properties
@@ -110,7 +110,6 @@ Feature: Zendesk Multi Source - Run time scenarios
   @TS-ZD-MULTI-RNTM-04 @BQ_SINK
   Scenario: Verify user should be able to deploy and Run the pipeline when plugin is configured with a Single Object for both Object to Pull and Object to Skip operation
     When Open Datafusion Project to configure pipeline
-    #And Select data pipeline type as: "Data Pipeline - Batch"
     And Select plugin: "Zendesk Multi Objects" from the plugins list as: "Source"
     And Navigate to the properties page of plugin: "ZendeskMultiObjects"
     And Enter input plugin property: "referenceName" with value: "Reference"
@@ -137,11 +136,9 @@ Feature: Zendesk Multi Source - Run time scenarios
     And Wait till pipeline is in running state
     And Open and capture logs
     And Verify the pipeline status is "Succeeded"
-    Then Validate record created in Sink application for Multi object is equal to expected output file "multiObjectsOutputFile"
+    Then Validate record created in Sink application for Multi object is equal to expected output file "multiObjectsOutputFile1"
 
-
-
-  @TS-ZD-MULTI-RNTM-05
+  @TS-ZD-MULTI-RNTM-05 @FILE_SINK_TEST
   Scenario: Verify user should be able to preview the pipeline when Zendesk MultiSource is configured for a hierarchical object with File Sink
     When Open Datafusion Project to configure pipeline
     And Select data pipeline type as: "Data Pipeline - Batch"
@@ -153,9 +150,9 @@ Feature: Zendesk Multi Source - Run time scenarios
     And configure Zendesk plugin for listed subdomains:
       | CLOUD_SUFI |
     And fill Objects to pull List with below listed Objects:
-      | Users | Tickets |
+      | Users |
     And fill Objects to skip List with below listed objects:
-      | Groups |
+      | Groups | Ticket Comments |
     And Enter input plugin property: "startDate" with value: "start.date"
     And Enter input plugin property: "endDate" with value: "end.date"
     And Validate "ZendeskMultiObjects" plugin properties
@@ -164,14 +161,14 @@ Feature: Zendesk Multi Source - Run time scenarios
     And Connect source as "ZendeskMultiObjects" and sink as "File" to establish connection
     And Navigate to the properties page of plugin: "File"
     And Enter input plugin property: "referenceName" with value: "Reference"
-    And Enter input plugin property: "path" with value: "file.path"
+    And Enter input plugin property: "path" with value: "filePluginOutputFolder"
     And Select dropdown plugin property: "format" with option value: "json"
     And Validate "File" plugin properties
     And Close the Plugin Properties page
     And Preview and run the pipeline
     Then Verify the preview of pipeline is "success"
 
-  @TS-ZD-MULTI-RNTM-06
+  @TS-ZD-MULTI-RNTM-06 @FILE_SINK_TEST
   Scenario: Verify user should be able to deploy and Run the pipeline when Zendesk MultiSource is configured for a hierarchical object with File Sink
     When Open Datafusion Project to configure pipeline
     And Select data pipeline type as: "Data Pipeline - Batch"
@@ -183,9 +180,9 @@ Feature: Zendesk Multi Source - Run time scenarios
     And configure Zendesk plugin for listed subdomains:
       | CLOUD_SUFI |
     And fill Objects to pull List with below listed Objects:
-      | Users | Tickets |
+      | Users |
     And fill Objects to skip List with below listed objects:
-      | Groups |
+      | Groups | Ticket Comments |
     And Enter input plugin property: "startDate" with value: "start.date"
     And Enter input plugin property: "endDate" with value: "end.date"
     And Validate "ZendeskMultiObjects" plugin properties
@@ -194,12 +191,14 @@ Feature: Zendesk Multi Source - Run time scenarios
     And Connect source as "ZendeskMultiObjects" and sink as "File" to establish connection
     And Navigate to the properties page of plugin: "File"
     And Enter input plugin property: "referenceName" with value: "Reference"
-    And Enter input plugin property: "path" with value: "file.path"
+    And Enter input plugin property: "path" with value: "filePluginOutputFolder"
     And Select dropdown plugin property: "format" with option value: "json"
     And Validate "File" plugin properties
     And Close the Plugin Properties page
     And Save and Deploy Pipeline
     And Run the Pipeline in Runtime
     And Wait till pipeline is in running state
-    Then Verify the pipeline status is "Succeeded"
+    And Verify the pipeline status is "Succeeded"
+    Then Validate output records in output folder path "filePluginOutputFolder" is equal to expected output file "userTestOutputFile"
+
 

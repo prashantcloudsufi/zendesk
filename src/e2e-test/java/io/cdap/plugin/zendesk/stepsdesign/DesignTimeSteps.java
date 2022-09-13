@@ -56,8 +56,9 @@ public class DesignTimeSteps {
   }
 
   @Then("Validate record created in Sink application for Multi object is equal to expected output file {string}")
-  public void verifyIfNewRecordCreatedInSinkApplicationForMultipleObjectsAreCorrect() throws IOException, InterruptedException {
-   // ZendeskPropertiesPageActions.verifyIfRecordCreatedInSinkForMultipleObjectsAreCorrect();
+  public void verifyIfNewRecordCreatedInSinkApplicationForMultipleObjectsAreCorrect(String expectedOutputFile)
+    throws IOException, InterruptedException {
+    ZendeskPropertiesPageActions.verifyIfRecordCreatedInSinkForMultipleObjectsAreCorrect(expectedOutputFile);
   }
 
   @Then("Validate output records in output folder path {string} is equal to expected output file {string}")

@@ -79,7 +79,6 @@ public class ZendeskPropertiesPageActions {
   public static void selectDropdowWithMultipleOptionsForObjectsToPull(List<String> tablesList) {
     int objectsToPull = tablesList.size();
     ZendeskPropertiesPage.objectDropdownForMultiObjectsToPull.click();
-
     for (int i = 0; i < objectsToPull; i++) {
       if (tablesList.get(i).contains("Groups")) {
         continue;
@@ -95,9 +94,7 @@ public class ZendeskPropertiesPageActions {
 
   public static void selectDropdowWithMultipleOptionsForObjectsToSkip(List<String> tablesList) {
     int objectsToPull = tablesList.size();
-
-    ZendeskPropertiesPage.objectDropdownForMultiObjectsToSkip.click();
-
+    ElementHelper.clickOnElement(ZendeskPropertiesPage.objectDropdownForMultiObjectsToSkip);
     for (int i = 0; i < objectsToPull; i++) {
       logger.info("Select checkbox option: " + tablesList.get(i));
       ElementHelper.selectCheckbox(ZendeskPropertiesPage.locateObjectCheckBoxInMultiObjectsSelector(tablesList.get(i)));
@@ -125,8 +122,8 @@ public class ZendeskPropertiesPageActions {
     }
   }
 
-  public static void verifyIfRecordCreatedInSinkForMultipleObjectsAreCorrect(String expectedOutputFile) throws IOException,
-    InterruptedException {
+  public static void verifyIfRecordCreatedInSinkForMultipleObjectsAreCorrect(String expectedOutputFile)
+    throws IOException, InterruptedException {
 
     List<String> expectedOutput = new ArrayList<>();
     PluginPropertyUtils.addPluginProp(expectedOutputFile, Paths.get(TestSetupHooks.class.getResource
@@ -139,11 +136,11 @@ public class ZendeskPropertiesPageActions {
       }
     }
     List<String> bigQueryDatasetTables = new ArrayList<>();
-    TableResult tablesSchema = ZendeskPropertiesPageActions.getTableNamesFromDataSet("ZendeskAutomation_Multi1");
+    TableResult tablesSchema = ZendeskPropertiesPageActions.getTableNamesFromDataSet(TestSetupHooks.bqTargetDataset);
     tablesSchema.iterateAll().forEach(value -> bigQueryDatasetTables.add(value.get(0).getValue().toString()));
 
     for (int table = 0; table < bigQueryDatasetTables.size(); table++) {
-      getBigQueryTableData("ZendeskAutomation_Multi1", bigQueryDatasetTables.get(table));
+      getBigQueryTableData(TestSetupHooks.bqTargetDataset, bigQueryDatasetTables.get(table));
     }
 
     for (int row = 0; row < bigQueryrows.size(); row++) {
@@ -161,7 +158,6 @@ public class ZendeskPropertiesPageActions {
       while ((line = bf1.readLine()) != null) {
         expectedOutput.add(line);
       }
-
       List<Path> partFiles = Files.walk(Paths.get(PluginPropertyUtils.pluginProp(outputFolder)))
         .filter(Files::isRegularFile)
         .filter(file -> file.toFile().getName().startsWith("part-r")).collect(Collectors.toList());
@@ -171,8 +167,6 @@ public class ZendeskPropertiesPageActions {
           String line1;
           int index = 0;
           while ((line1 = bf.readLine()) != null) {
-            System.out.println("line1:" + line1);
-
             if (!compareValueOfBothResponses(expectedOutput.get(index), line1)) {
               Assert.fail("Output records are not equal to expected output");
             }
@@ -194,14 +188,12 @@ public class ZendeskPropertiesPageActions {
     return mapDifference.areEqual();
   }
 
-  public static List<String> getBigQueryTableData(String dataset, String table)
+  public static void getBigQueryTableData(String dataset, String table)
     throws IOException, InterruptedException {
     String projectId = PluginPropertyUtils.pluginProp("projectId");
     String selectQuery = "SELECT TO_JSON(t) FROM `" + projectId + "." + dataset + "." + table + "` AS t";
     TableResult result = BigQueryClient.getQueryResult(selectQuery);
     result.iterateAll().forEach(value -> bigQueryrows.add(value.get(0).getValue().toString()));
-
-    return bigQueryrows;
   }
 
   public static TableResult getTableNamesFromDataSet(String bqTargetDataset) throws IOException, InterruptedException {

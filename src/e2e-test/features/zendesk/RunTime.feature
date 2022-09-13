@@ -232,6 +232,6 @@ Feature: Zendesk Source - Run time scenarios
     And Save and Deploy Pipeline
     And Run the Pipeline in Runtime
     And Wait till pipeline is in running state
-    Then Verify the pipeline status is "Succeeded"
+    And Verify the pipeline status is "Succeeded"
     Then Validate output records in output folder path "filePluginOutputFolder" is equal to expected output file "userTestOutputFile"
 

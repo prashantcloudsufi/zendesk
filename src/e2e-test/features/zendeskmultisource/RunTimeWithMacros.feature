@@ -89,7 +89,8 @@ Feature: Zendesk Multi Source - Run time scenarios
     And Run the Pipeline in Runtime with runtime arguments
     And Wait till pipeline is in running state
     And Open and capture logs
-    Then Verify the pipeline status is "Succeeded"
+    And Verify the pipeline status is "Succeeded"
+    Then Validate record created in Sink application for Multi object is equal to expected output file "multiObjectsOutputFile"
 
   @TS-ZD-MULTI-RNTM_MACRO-03 @BQ_SINK
   Scenario: Verify user should be able to preview the pipeline when plugin is configured for Advanced Properties with macros
@@ -103,7 +104,7 @@ Feature: Zendesk Multi Source - Run time scenarios
     And configure Zendesk plugin for listed subdomains:
       | CLOUD_SUFI |
     And fill Objects to pull List with below listed Objects:
-      | Groups | Post Comments | Article Comments | Requests Comments |
+      | Ticket Comments | Groups |
     And fill Objects to skip List with below listed objects:
       | Users | Organizations |
     And Enter input plugin property: "startDate" with value: "start.date"
@@ -139,7 +140,7 @@ Feature: Zendesk Multi Source - Run time scenarios
     And configure Zendesk plugin for listed subdomains:
       | CLOUD_SUFI |
     And fill Objects to pull List with below listed Objects:
-      | Groups | Post Comments | Article Comments | Requests Comments |
+      | Ticket Comments | Groups |
     And fill Objects to skip List with below listed objects:
       | Users | Organizations |
     And Enter input plugin property: "startDate" with value: "start.date"
@@ -163,7 +164,9 @@ Feature: Zendesk Multi Source - Run time scenarios
     And Run the Pipeline in Runtime with runtime arguments
     And Wait till pipeline is in running state
     And Open and capture logs
-    Then Verify the pipeline status is "Succeeded"
+    And Verify the pipeline status is "Succeeded"
+    Then Validate record created in Sink application for Multi object is equal to expected output file "multiObjectsOutputFile"
+
 
   @TS-ZD-MULTI-RNTM-MACRO-05 @BQ_SINK
   Scenario: Verify pipeline failure message in logs when user provides invalid Credentials with Macros
